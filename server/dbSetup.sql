@@ -5,4 +5,31 @@ CREATE TABLE IF NOT EXISTS accounts(
   name varchar(255) COMMENT 'User Name',
   email varchar(255) COMMENT 'User Email',
   picture varchar(255) COMMENT 'User Picture'
-) default charset utf8 COMMENT '';
+) DEFAULT CHARSET utf8mb4;
+-- --------------------------
+CREATE TABLE IF NOT EXISTS vaults(
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  description VARCHAR(250) NOT NULL,
+  img VARCHAR(500) NOT NULL,
+  isPrivate BOOLEAN NOT NULL DEFAULT false,
+  creatorId VARCHAR(255) NOT NULL,
+  FOREIGN KEY (creatorId) REFERENCES accounts(id) ON DELETE CASCADE
+) DEFAULT CHARSET utf8mb4;
+-- ---------------------------------
+CREATE TABLE IF NOT EXISTS vaultKeeps(
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  creatorId VARCHAR(255) NOT NULL,
+  vaultId INT NOT NULL,
+  keepId INT NOT NULL
+) DEFAULT CHARSET utf8mb4;
+-- ----------------------------------
+CREATE TABLE IF NOT EXISTS keeps(
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  description VARCHAR(250) NOT NULL,
+  img VARCHAR(500) NOT NULL,
+  views INT NOT NULL DEFAULT 0,
+  creatorId VARCHAR(255) NOT NULL,
+  FOREIGN KEY (creatorId) REFERENCES accounts(id) ON DELETE CASCADE
+) DEFAULT CHARSET utf8mb4;
