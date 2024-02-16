@@ -14,3 +14,4 @@ global using CodeWorks.Utils;
 global using Keepr.Repositories;
 global using Keepr.Services;
 global using Keepr.Models;
+global using Keepr.Interfaces;
