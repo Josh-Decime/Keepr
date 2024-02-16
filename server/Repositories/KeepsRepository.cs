@@ -87,8 +87,12 @@ public class KeepsRepository(IDbConnection db) : IRepository<Keep>
         return keep;
     }
 
-    public void Delete(int id)
+    public void Delete(int keepId)
     {
-        throw new NotImplementedException();
+        string sql = @"
+        DELETE FROM keeps
+        WHERE keeps.id = @keepId;
+        ";
+        db.Execute(sql, new { keepId });
     }
 }

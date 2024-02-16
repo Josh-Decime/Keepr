@@ -14,6 +14,7 @@ public class KeepsService(KeepsRepository repo)
         return keep;
     }
 
+
     internal List<Keep> GetAllKeeps()
     {
         List<Keep> keeps = repo.GetAll();
@@ -27,14 +28,22 @@ public class KeepsService(KeepsRepository repo)
         return keep;
     }
 
-    internal Keep UpdateKeep(Keep updateData)
+    internal Keep UpdateKeep(Keep updateData, string userId)
     {
         Keep original = GetKeepById(updateData.Id);
+        if (original.CreatorId != userId) throw new Exception("Not your keep to update!");
         original.Name = updateData.Name ?? original.Name;
         original.Description = updateData.Description ?? original.Description;
         original.Img = updateData.Img ?? original.Img;
         Keep update = repo.Update(original);
         return update;
 
+    }
+    internal string DeleteKeep(int keepId, string userId)
+    {
+        Keep original = repo.GetById(keepId);
+        if (original.CreatorId != userId) throw new Exception("Not your Keep to delete!");
+        repo.Delete(keepId);
+        return $"Keep {original.Name} has been deleted.";
     }
 }
