@@ -29,10 +29,6 @@ public class VaultsRepository(IDbConnection db) : IRepository<Vault>
         return vault;
     }
 
-    public void Delete(int id)
-    {
-        throw new NotImplementedException();
-    }
 
     public List<Vault> GetAll()
     {
@@ -59,7 +55,36 @@ public class VaultsRepository(IDbConnection db) : IRepository<Vault>
 
     public Vault Update(Vault updateData)
     {
-        throw new NotImplementedException();
+        string sql = @"
+        UPDATE vaults SET
+        name = @name,
+        description = @description,
+        img = @img,
+        isPrivate = @isPrivate
+        WHERE id = @id;
+
+        SELECT
+        vaults.*,
+        accounts.*
+        FROM vaults
+        JOIN accounts ON vaults.creatorId = accounts.id
+        WHERE vaults.id = @id;
+        ";
+        Vault vault = db.Query<Vault, Account, Vault>(sql, (vault, account) =>
+        {
+            vault.Creator = account;
+            return vault;
+        }, updateData).FirstOrDefault();
+        return vault;
+    }
+
+    public void Delete(int vaultId)
+    {
+        string sql = @"
+        DELETE FROM vaults
+        WHERE vaults.id = @vaultId;
+        ";
+        db.Execute(sql, new { vaultId });
     }
 
 
