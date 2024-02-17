@@ -10,9 +10,9 @@ public class VaultsRepository(IDbConnection db) : IRepository<Vault>
     {
         string sql = @"
         INSERT INTO vaults
-        (name, description, img, creatorId)
+        (name, description, img, creatorId, isPrivate)
         VALUES
-        (@name, @description, @img, @creatorId);
+        (@name, @description, @img, @creatorId, @isPrivate);
 
         SELECT
         vaults.*,
