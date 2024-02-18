@@ -1,22 +1,39 @@
 <template>
-  <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-    <div class="home-card p-5 card align-items-center shadow rounded elevation-3">
-      <img src="https://bcw.blob.core.windows.net/public/img/8600856373152463" alt="CodeWorks Logo"
-        class="rounded-circle">
-      <h1 class="my-5 bg-dark text-white p-3 rounded text-center">
-        Vue 3 Starter
-      </h1>
-    </div>
-  </div>
+  <section class="container">
+    <section class="row" data-masonry='{"percentPosition": true }'>
+      <!-- TODO masonry is not working -->
+      <div v-for="keep in keeps" class="col-6 col-md-3">
+        <KeepCard :keep="keep" />
+      </div>
+    </section>
+  </section>
 </template>
 
 <script>
+import Pop from '../utils/Pop.js';
+import { keepsService } from '../services/KeepsService.js'
+import { computed, onMounted } from 'vue';
+import { AppState } from '../AppState.js'
+import KeepCard from '../components/KeepCard.vue';
+
 export default {
   setup() {
-    return {
-      
+    onMounted(() => {
+      getKeeps();
+    });
+    async function getKeeps() {
+      try {
+        await keepsService.getKeeps();
+      }
+      catch (error) {
+        Pop.error(error);
+      }
     }
-  }
+    return {
+      keeps: computed(() => AppState.keeps)
+    };
+  },
+  components: { KeepCard }
 }
 </script>
 
@@ -41,3 +58,4 @@ export default {
   }
 }
 </style>
+
