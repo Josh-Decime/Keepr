@@ -12,7 +12,7 @@ public class Keep : RepoItem<int>
 
 }
 
-public class VaultKeepView : Keep
+public class VaultKept : Keep
 {
     public int VaultKeepId { get; set; }
 }
