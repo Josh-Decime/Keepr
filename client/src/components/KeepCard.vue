@@ -1,8 +1,9 @@
 <template>
-    <div class="mb-4 relativePlacement">
+    <div class="mt-4 relativePlacement">
         <img :src="keep.img" :alt="`Picture of ${keep.name}`" class="img-fluid keepImgStyling gradient">
         <p class="absolutePlacement">{{ keep.name }}</p>
-        <img :src="keep.creator.picture" :alt="`${keep.creator.name}'s profile picture`" class="profileImg">
+        <img :src="keep.creator.picture" :alt="`${keep.creator.name}'s profile picture`" :title="`${keep.creator.name}`"
+            class="profileImg">
     </div>
 </template>
 

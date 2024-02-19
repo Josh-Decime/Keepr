@@ -1,9 +1,13 @@
 <template>
-  <nav class="navbar navbar-expand-sm navbar-dark bg-dark px-3">
+  <nav class="navbar navbar-expand-sm navbar-dark bg-page px-3">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
-      <div class="d-flex flex-column align-items-center">
+      <!-- <div class="d-flex flex-column align-items-center text-primary fw-bold">
         <img alt="logo" src="../assets/img/cw-logo.png" height="45" />
-      </div>
+        Home
+      </div> -->
+      <button class="btn btn-outline fw-bold PrimaryHvr">
+        Home
+      </button>
     </router-link>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
       aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,15 +15,33 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav me-auto">
-        <li>
+        <!-- <li>
           <router-link :to="{ name: 'About' }" class="btn text-success lighten-30 selectable text-uppercase">
             About
           </router-link>
-        </li>
+        </li> -->
+        <!-- Example single danger button -->
+        <div class="btn-group">
+          <button type="button" class="btn btn-outline dropdown-toggle fw-bold PrimaryHvr" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Create
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">New Keep</a></li>
+            <hr class="dropdown-divider">
+            <li><a class="dropdown-item" href="#">New Vault</a></li>
+            <!-- <li><a class="dropdown-item" href="#">Something else here</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="#">Separated link</a></li> -->
+          </ul>
+        </div>
+
       </ul>
       <!-- LOGIN COMPONENT HERE -->
       <div>
-        <button class="btn text-light" @click="toggleTheme">
+        <button class="btn text-primary" @click="toggleTheme">
           <i class="mdi" :class="theme == 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'"></i>
         </button>
       </div>
@@ -72,6 +94,10 @@ a:hover {
 @media screen and (min-width: 576px) {
   nav {
     height: 64px;
+  }
+
+  .PrimaryHvr:hover {
+    color: var(--bs-primary);
   }
 }
 </style>
