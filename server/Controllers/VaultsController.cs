@@ -85,7 +85,6 @@ public class VaultsController : ControllerBase
         try
         {
             Account userInfo = await auth.GetUserInfoAsync<Account>(HttpContext);
-            // TODO run getVaultById before passing it to the vaultKeepsService
             Vault vault = vaultsService.GetVaultById(vaultId, userInfo?.Id);
             List<VaultKept> vaultKept = vaultKeepsService.GetKeepsInVault(vault.Id);
             return Ok(vaultKept);

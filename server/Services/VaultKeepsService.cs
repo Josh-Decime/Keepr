@@ -12,7 +12,6 @@ public class VaultKeepsService(VaultKeepsRepository repo, VaultsService vaultsSe
     {
         Vault vault = vaultsService.GetVaultById(vaultKeepData.VaultId, userId);
         if (vaultKeepData.CreatorId != vault.CreatorId) throw new Exception("You can't save Keeps to someone elses Vault");
-        // if (vaultKeepData.CreatorId != userId) throw new Exception("Not you VaultKeep to make");
         VaultKeep vaultKeep = repo.CreateVaultKeep(vaultKeepData);
         return vaultKeep;
     }
@@ -20,7 +19,6 @@ public class VaultKeepsService(VaultKeepsRepository repo, VaultsService vaultsSe
 
     internal List<VaultKept> GetKeepsInVault(int vaultId)
     {
-        // Vault vault = vaultsService.GetVaultById(vaultId, userId);
         List<VaultKept> vaultKept = repo.getKeepsInVault(vaultId);
         return vaultKept;
     }

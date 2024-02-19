@@ -3,7 +3,7 @@ export class Profile {
     this.id = data.id
     this.name = data.name
     this.picture = data.picture
-    // TODO add additional properties if needed
+    this.coverImg = data.coverImg
   }
 }
 

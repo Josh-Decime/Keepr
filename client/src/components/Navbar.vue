@@ -22,8 +22,8 @@
         </li> -->
         <!-- Example single danger button -->
         <div class="btn-group">
-          <button type="button" class="btn btn-outline dropdown-toggle fw-bold PrimaryHvr" data-bs-toggle="dropdown"
-            aria-expanded="false">
+          <button v-if="account.id" type="button" class="btn btn-outline dropdown-toggle fw-bold PrimaryHvr"
+            data-bs-toggle="dropdown" aria-expanded="false">
             Create
           </button>
           <ul class="dropdown-menu">
@@ -93,12 +93,13 @@
 </template>
 
 <script>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { loadState, saveState } from '../utils/Store.js';
 import Login from './Login.vue';
 import Pop from '../utils/Pop.js';
 import { keepsService } from '../services/KeepsService.js';
 import { Modal } from 'bootstrap';
+import { AppState } from '../AppState.js';
 export default {
   setup() {
 
@@ -129,6 +130,7 @@ export default {
           Pop.error(error)
         }
       },
+      account: computed(() => AppState.account)
     }
   },
   components: { Login }
