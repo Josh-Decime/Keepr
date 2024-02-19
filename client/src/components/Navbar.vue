@@ -57,17 +57,18 @@
                 <form @submit.prevent="createKeep()">
                   <div>
                     <input v-model="keepData.name" type="text" name="keep-name" id="create-keep-title" required
-                      minlength="3" maxlength="50" class="form-control" title="Keep's Title"
+                      minlength="3" maxlength="50" class="form-control mb-2" title="Keep's Title"
                       placeholder="Keep's Title...">
                   </div>
                   <div>
                     <input v-model="keepData.img" type="text" name="keep-img" id="create-keep-title" required
-                      minlength="3" maxlength="500" class="form-control" title="Image URL" placeholder="Image URL...">
+                      minlength="3" maxlength="500" class="form-control mb-2" title="Image URL"
+                      placeholder="Image URL...">
                   </div>
                   <div>
                     <textarea v-model="keepData.description" type="text" name="keep-description"
                       id="create-keep-description" required minlength="3" maxlength="1000" cols="30" rows="10"
-                      class="form-control" title="Keep's description" placeholder="Keep's Description..."></textarea>
+                      class="form-control mb-2" title="Keep's description" placeholder="Keep's Description..."></textarea>
                   </div>
                   <button type="submit" class="btn btn-primary">Save changes</button>
                 </form>

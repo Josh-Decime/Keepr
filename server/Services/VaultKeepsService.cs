@@ -6,10 +6,10 @@ public class VaultKeepsService(VaultKeepsRepository repo)
     private readonly VaultKeepsRepository repo = repo;
     // -------------------------------------------------------------------
 
-    internal VaultKept CreateVaultKeep(VaultKeep vaultKeepData)
+    internal VaultKeep CreateVaultKeep(VaultKeep vaultKeepData)
     {
-        VaultKept vaultKept = repo.CreateVaultKeep(vaultKeepData);
-        return vaultKept;
+        VaultKeep vaultKeep = repo.CreateVaultKeep(vaultKeepData);
+        return vaultKeep;
     }
 
 

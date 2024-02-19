@@ -6,7 +6,7 @@ public class VaultKeepsRepository(IDbConnection db)
     private readonly IDbConnection db = db;
     // --------------------------------------------------
 
-    internal VaultKept CreateVaultKeep(VaultKeep vaultKeepData)
+    internal VaultKeep CreateVaultKeep(VaultKeep vaultKeepData)
     {
         string sql = @"
         INSERT INTO vaultKeeps
@@ -19,8 +19,8 @@ public class VaultKeepsRepository(IDbConnection db)
         FROM vaultKeeps
         WHERE vaultKeeps.id = LAST_INSERT_ID();
         ";
-        VaultKept vaultKept = db.Query<VaultKept>(sql, vaultKeepData).FirstOrDefault();
-        return vaultKept;
+        VaultKeep vaultKeep = db.Query<VaultKeep>(sql, vaultKeepData).FirstOrDefault();
+        return vaultKeep;
     }
 
 
