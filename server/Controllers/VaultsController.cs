@@ -6,10 +6,12 @@ public class VaultsController : ControllerBase
 {
     private readonly Auth0Provider auth;
     private readonly VaultsService vaultsService;
-    public VaultsController(Auth0Provider auth, VaultsService vaultsService)
+    private readonly VaultKeepsService vaultKeepsService;
+    public VaultsController(Auth0Provider auth, VaultsService vaultsService, VaultKeepsService vaultKeepsService)
     {
         this.auth = auth;
         this.vaultsService = vaultsService;
+        this.vaultKeepsService = vaultKeepsService;
     }
     // --------------------------------------------------------------------------
 
@@ -77,5 +79,18 @@ public class VaultsController : ControllerBase
         }
     }
 
+    [HttpGet("{vaultId}/keeps")]
+    public ActionResult<List<Keep>> GetKeepsInVault(int vaultId)
+    {
+        try
+        {
+            List<Keep> keeps = vaultKeepsService.GetKeepsInVault(vaultId);
+            return Ok(keeps);
+        }
+        catch (Exception error)
+        {
+            return BadRequest(error.Message);
+        }
+    }
 
 }

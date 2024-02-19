@@ -12,7 +12,11 @@ public class VaultKeepsService(VaultKeepsRepository repo)
         return vaultKeep;
     }
 
-
+    internal List<Keep> GetKeepsInVault(int vaultId)
+    {
+        List<Keep> keeps = repo.getKeepsInVault(vaultId);
+        return keeps;
+    }
 
 
 
