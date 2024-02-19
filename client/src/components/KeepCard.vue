@@ -1,10 +1,44 @@
 <template>
-    <div class="mt-4 relativePlacement">
-        <img :src="keep.img" :alt="`Picture of ${keep.name}`" class="img-fluid keepImgStyling gradient">
-        <p class="absolutePlacement">{{ keep.name }}</p>
-        <img :src="keep.creator.picture" :alt="`${keep.creator.name}'s profile picture`" :title="`${keep.creator.name}`"
-            class="profileImg">
-    </div>
+    <section @click="getActiveKeep()" data-bs-toggle="modal" data-bs-target="#keepModal">
+        <div class="mt-4 relativePlacement">
+            <img :src="keep.img" :alt="`Picture of ${keep.name}`" class="img-fluid keepImgStyling gradient">
+            <p class="absolutePlacement">{{ keep.name }}</p>
+            <img :src="keep.creator.picture" :alt="`${keep.creator.name}'s profile picture`" :title="`${keep.creator.name}`"
+                class="profileImg">
+        </div>
+    </section>
+
+
+    <section v-if="activeKeep">
+        <div class="modal fade" id="keepModal" tabindex="-1" aria-labelledby="keepModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl rounded">
+                <div class="modal-content">
+                    <!-- <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="keepModalLabel">{{ activeKeep.name }}</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                    </div> -->
+                    <div class="row">
+                        <section class="col-12 col-md-6">
+                            <img :src="activeKeep.img" :alt="`${activeKeep.name}'s image'`"
+                                class="img-fluid desktopRoundEdge mobileRoundTop imgToEdge">
+                        </section>
+                        <section class="col-12 col-md-6">
+                            <p class="modal-title fs-5 text-center fw-bolder fs-1 mt-2" id="keepModalLabel">
+                                {{ activeKeep.name }}
+                            </p>
+                            <p class="fs-3">{{ activeKeep.description }}</p>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </template>
 
 
@@ -12,10 +46,18 @@
 import { AppState } from '../AppState';
 import { computed, ref, onMounted } from 'vue';
 import { Keep } from '../models/Keep.js';
+import { keepsService } from '../services/KeepsService.js';
 export default {
     props: { keep: { type: Keep, required: true } },
-    setup() {
-        return {}
+    setup(props) {
+
+        async function getActiveKeep() {
+            await keepsService.getActiveKeep(props.keep.id)
+        }
+        return {
+            getActiveKeep,
+            activeKeep: computed(() => AppState.activeKeep)
+        }
     }
 };
 </script>
@@ -55,5 +97,24 @@ export default {
 
 .gradient {
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%)
+}
+
+@media (min-width: 768px) {
+    .desktopRoundEdge {
+        border-top-left-radius: 7px;
+        border-bottom-left-radius: 7px;
+    }
+}
+
+@media (max-width: 768px) {
+    .mobileRoundTop {
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
+    }
+}
+
+
+.imgToEdge {
+    width: 100%;
 }
 </style>
