@@ -28,16 +28,17 @@ public class VaultKeepsRepository(IDbConnection db)
         string sql = @"
         SELECT
         keeps.*,
-        vaultKeeps.*,
-        accounts.*
+        accounts.*,
+        vaultKeeps.*
         FROM keeps
         JOIN vaultKeeps ON keeps.id = vaultKeeps.keepId
         JOIN accounts ON keeps.creatorId = accounts.id
         WHERE vaultKeeps.vaultId = @vaultId
         ";
-        List<VaultKept> vaultKept = db.Query<VaultKept, Account, VaultKept>(sql, (vaultKept, account) =>
+        List<VaultKept> vaultKept = db.Query<VaultKept, Account, VaultKeep, VaultKept>(sql, (vaultKept, account, vaultKeep) =>
         {
             vaultKept.Creator = account;
+            vaultKept.VaultKeepId = vaultKeep.KeepId;
             return vaultKept;
         }, new { vaultId }).ToList();
         return vaultKept;
