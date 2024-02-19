@@ -29,10 +29,17 @@
                                 class="img-fluid desktopRoundEdge mobileRoundTop imgToEdge">
                         </section>
                         <section class="col-12 col-md-6">
-                            <p class="modal-title fs-5 text-center fw-bolder fs-1 mt-2" id="keepModalLabel">
+                            <p class="modal-title fs-5 text-center fw-bolder fs-2 mt-2" id="keepModalLabel">
                                 {{ activeKeep.name }}
                             </p>
-                            <p class="fs-3">{{ activeKeep.description }}</p>
+                            <p class="fs-5 mx-2">{{ activeKeep.description }}</p>
+
+                            <!-- FIXME align self & align item end aren't pushing this to the bottom -->
+                            <div v-if="activeKeep.creator" class="align-self-end">
+                                <img :src="activeKeep.creator.picture"
+                                    :alt="`${activeKeep.creator.name}'s profile picture'`" class="keepModalProfileImg">
+                                <span class="mx-2">{{ activeKeep.creator.name }}</span>
+                            </div>
                         </section>
                     </div>
                 </div>
@@ -116,5 +123,10 @@ export default {
 
 .imgToEdge {
     width: 100%;
+}
+
+.keepModalProfileImg {
+    border-radius: 50%;
+    height: 5vh;
 }
 </style>
