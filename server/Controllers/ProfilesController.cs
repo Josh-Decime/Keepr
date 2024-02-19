@@ -40,4 +40,20 @@ public class ProfilesController : ControllerBase
             return BadRequest(error.Message);
         }
     }
+
+    [HttpGet("{profileId}/vaults")]
+    public async Task<ActionResult<List<Vault>>> GetUsersVaults(string profileId)
+    {
+        try
+        {
+            Account userInfo = await auth.GetUserInfoAsync<Account>(HttpContext);
+            List<Vault> vaults = profilesService.GetUsersVaults(profileId, userInfo?.Id);
+            return vaults;
+        }
+        catch (Exception error)
+        {
+            return BadRequest(error.Message);
+        }
+    }
+
 }

@@ -1,6 +1,7 @@
 
 
 
+
 namespace Keepr.Repositories;
 
 public class ProfilesRepository(IDbConnection db)
@@ -32,7 +33,15 @@ public class ProfilesRepository(IDbConnection db)
         return keeps;
     }
 
-
-
-
+    internal List<Vault> GetUsersVaults(string profileId)
+    {
+        string sql = @"
+        SELECT 
+        vaults.*
+        FROM vaults
+        WHERE vaults.creatorId = @profileId
+        ";
+        List<Vault> vaults = db.Query<Vault>(sql, new { profileId }).ToList();
+        return vaults;
+    }
 }

@@ -21,7 +21,10 @@ public class ProfilesService(ProfilesRepository repo)
         return keeps;
     }
 
-
-
-
+    internal List<Vault> GetUsersVaults(string profileId, string userId)
+    {
+        List<Vault> vaults = repo.GetUsersVaults(profileId);
+        List<Vault> filtered = vaults.FindAll(vault => vault.IsPrivate == false || vault.CreatorId == userId);
+        return filtered;
+    }
 }

@@ -1,3 +1,4 @@
+
 namespace Keepr.Services;
 
 public class AccountService
@@ -30,5 +31,11 @@ public class AccountService
     original.Name = editData.Name?.Length > 0 ? editData.Name : original.Name;
     original.Picture = editData.Picture?.Length > 0 ? editData.Picture : original.Picture;
     return _repo.Edit(original);
+  }
+
+  internal List<Vault> GetMyVaults(string userId)
+  {
+    List<Vault> vaults = _repo.GetMyVaults(userId);
+    return vaults;
   }
 }
