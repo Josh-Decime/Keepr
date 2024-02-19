@@ -23,18 +23,24 @@ public class VaultKeepsRepository(IDbConnection db)
         return vaultKeep;
     }
 
-    internal List<Keep> getKeepsInVault(int vaultId)
+    internal List<VaultKept> getKeepsInVault(int vaultId)
     {
         string sql = @"
         SELECT
         keeps.*,
-        vaultKeeps.*
+        vaultKeeps.*,
+        accounts.*
         FROM keeps
         JOIN vaultKeeps ON keeps.id = vaultKeeps.keepId
+        JOIN accounts ON keeps.creatorId = accounts.id
         WHERE vaultKeeps.vaultId = @vaultId
         ";
-        List<Keep> keeps = db.Query<Keep>(sql, new { vaultId }).ToList();
-        return keeps;
+        List<VaultKept> vaultKept = db.Query<VaultKept, Account, VaultKept>(sql, (vaultKept, account) =>
+        {
+            vaultKept.Creator = account;
+            return vaultKept;
+        }, new { vaultId }).ToList();
+        return vaultKept;
     }
 
 

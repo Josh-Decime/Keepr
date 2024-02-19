@@ -80,12 +80,12 @@ public class VaultsController : ControllerBase
     }
 
     [HttpGet("{vaultId}/keeps")]
-    public ActionResult<List<Keep>> GetKeepsInVault(int vaultId)
+    public ActionResult<List<VaultKept>> GetKeepsInVault(int vaultId)
     {
         try
         {
-            List<Keep> keeps = vaultKeepsService.GetKeepsInVault(vaultId);
-            return Ok(keeps);
+            List<VaultKept> vaultKept = vaultKeepsService.GetKeepsInVault(vaultId);
+            return Ok(vaultKept);
         }
         catch (Exception error)
         {
