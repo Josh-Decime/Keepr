@@ -1,6 +1,10 @@
 <template>
     <section @click="getActiveKeep()" data-bs-toggle="modal" data-bs-target="#keepModal">
-        <div class="mt-4 relativePlacement">
+        <div class="mt-4 relativePlacement selectable">
+
+            <!-- <div v-if="keep.creatorId == account.id"><i
+                    class="mdi mdi-close-circle text-danger deletePlacement btn btn-outline fs-3"></i></div> -->
+
             <img :src="keep.img" :alt="`Picture of ${keep.name}`" class="img-fluid keepImgStyling gradient">
             <p class="absolutePlacement">{{ keep.name }}</p>
             <img :src="keep.creator.picture" :alt="`${keep.creator.name}'s profile picture`" :title="`${keep.creator.name}`"
@@ -29,6 +33,10 @@
                                 class="img-fluid desktopRoundEdge mobileRoundTop imgToEdge">
                         </section>
                         <section class="col-12 col-md-6">
+
+                            <div v-if="activeKeep.creatorId == account.id" @click="deleteKeep()" class="text-end"><i
+                                    class="mdi mdi-close-circle text-danger btn btn-outline fs-3"></i></div>
+
                             <p class="modal-title fs-5 text-center fw-bolder fs-2 mt-2" id="keepModalLabel">
                                 {{ activeKeep.name }}
                             </p>
@@ -54,16 +62,40 @@ import { AppState } from '../AppState';
 import { computed, ref, onMounted } from 'vue';
 import { Keep } from '../models/Keep.js';
 import { keepsService } from '../services/KeepsService.js';
+import Pop from '../utils/Pop.js';
+import { logger } from '../utils/Logger.js';
+import { Modal } from 'bootstrap';
 export default {
     props: { keep: { type: Keep, required: true } },
     setup(props) {
+        const activeKeep = computed(() => AppState.activeKeep)
 
         async function getActiveKeep() {
-            await keepsService.getActiveKeep(props.keep.id)
+            try {
+                await keepsService.getActiveKeep(props.keep.id)
+            } catch (error) {
+                Pop.error(error)
+            }
+
+        }
+
+        async function deleteKeep() {
+            try {
+                const confirm = await Pop.confirm("Are you sure you want to delete this?")
+                if (!confirm) return
+                Modal.getOrCreateInstance('#keepModal').hide()
+                logger.log('active keep id:', activeKeep.value.id)
+                await keepsService.deleteKeep(activeKeep.value.id)
+                Pop.success('Keep deleted')
+            } catch (error) {
+                Pop.error(error)
+            }
         }
         return {
             getActiveKeep,
-            activeKeep: computed(() => AppState.activeKeep)
+            deleteKeep,
+            activeKeep,
+            account: computed(() => AppState.account),
         }
     }
 };
@@ -91,6 +123,12 @@ export default {
     font-weight: bolder;
     color: var(--bs-text);
     text-shadow: 2px 2px 3px black;
+}
+
+.deletePlacement {
+    position: absolute;
+    top: 5px;
+    left: 95%;
 }
 
 .profileImg {
