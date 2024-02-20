@@ -34,5 +34,11 @@ class KeepsService {
         AppState.keeps.splice(indexToRemove, 1)
     }
 
+    async getUsersKeeps(profileId) {
+        const response = await api.get(`api/profiles/${profileId}/keeps`)
+        logger.log('users keeps:', response.data)
+        AppState.keeps = response.data.map(keep => new Keep(keep))
+    }
+
 }
 export const keepsService = new KeepsService()
