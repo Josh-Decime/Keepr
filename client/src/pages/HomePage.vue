@@ -1,9 +1,10 @@
 <template>
   <section class="container">
-    <section class="row" data-masonry='{"percentPosition": true }'>
-      <!-- TODO masonry is not working -->
-      <div v-for="keep in keeps" class="col-6 col-md-3">
-        <KeepCard :keep="keep" />
+    <section class="row">
+      <div class="masonry">
+        <div v-for="keep in keeps" class="">
+          <KeepCard :keep="keep" />
+        </div>
       </div>
     </section>
   </section>
@@ -56,6 +57,10 @@ export default {
       object-position: center;
     }
   }
+}
+
+.masonry {
+  columns: 200px;
 }
 </style>
 

@@ -13,8 +13,10 @@
 
                 <section class="row">
                     <p class="fs-3">Keeps</p>
-                    <div v-for="keep in keeps" class="col-6 col-md-3">
-                        <KeepCard :keep="keep" />
+                    <div class=" masonry">
+                        <div v-for="keep in keeps" class="">
+                            <KeepCard :keep="keep" />
+                        </div>
                     </div>
                 </section>
             </div>
@@ -67,4 +69,8 @@ export default {
 </script>
 
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.masonry {
+    columns: 200px;
+}
+</style>
