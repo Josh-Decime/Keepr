@@ -44,11 +44,17 @@
                             <p class="fs-5 mx-2">{{ activeKeep.description }}</p>
 
                             <!-- FIXME align self & align item end aren't pushing this to the bottom -->
-                            <div v-if="activeKeep.creator" class="align-self-end">
-                                <img :src="activeKeep.creator.picture"
-                                    :alt="`${activeKeep.creator.name}'s profile picture'`" class="keepModalProfileImg">
-                                <span class="mx-2">{{ activeKeep.creator.name }}</span>
-                            </div>
+                            <!-- TODO this is giving a warning to the console, could be cleaned up -->
+                            <section v-if="activeKeep.creator">
+                                <RouterLink :to="{ path: `profile/${activeKeep.creatorId}` }">
+                                    <div class="align-self-end" data-bs-dismiss="modal" aria-label="ToProfile">
+                                        <img :src="activeKeep.creator.picture"
+                                            :alt="`${activeKeep.creator.name}'s profile picture'`"
+                                            class="keepModalProfileImg">
+                                        <span class="mx-2">{{ activeKeep.creator.name }}</span>
+                                    </div>
+                                </RouterLink>
+                            </section>
                         </section>
                     </div>
                 </div>
@@ -66,30 +72,31 @@ import { keepsService } from '../services/KeepsService.js';
 import Pop from '../utils/Pop.js';
 import { logger } from '../utils/Logger.js';
 import { Modal } from 'bootstrap';
+import { RouterLink } from 'vue-router';
 export default {
     props: { keep: { type: Keep, required: true } },
     setup(props) {
-        const activeKeep = computed(() => AppState.activeKeep)
-
+        const activeKeep = computed(() => AppState.activeKeep);
         async function getActiveKeep() {
             try {
-                await keepsService.getActiveKeep(props.keep.id)
-            } catch (error) {
-                Pop.error(error)
+                await keepsService.getActiveKeep(props.keep.id);
             }
-
+            catch (error) {
+                Pop.error(error);
+            }
         }
-
         async function deleteKeep() {
             try {
-                const confirm = await Pop.confirm("Are you sure you want to delete this?")
-                if (!confirm) return
-                Modal.getOrCreateInstance('#keepModal').hide()
-                logger.log('active keep id:', activeKeep.value.id)
-                await keepsService.deleteKeep(activeKeep.value.id)
-                Pop.success('Keep deleted')
-            } catch (error) {
-                Pop.error(error)
+                const confirm = await Pop.confirm("Are you sure you want to delete this?");
+                if (!confirm)
+                    return;
+                Modal.getOrCreateInstance('#keepModal').hide();
+                logger.log('active keep id:', activeKeep.value.id);
+                await keepsService.deleteKeep(activeKeep.value.id);
+                Pop.success('Keep deleted');
+            }
+            catch (error) {
+                Pop.error(error);
             }
         }
         return {
@@ -97,8 +104,9 @@ export default {
             deleteKeep,
             activeKeep,
             account: computed(() => AppState.account),
-        }
-    }
+        };
+    },
+    components: { RouterLink }
 };
 </script>
 

@@ -5,6 +5,7 @@
                 <img :src="activeVault.img" :alt="`${activeVault.name}'s picture`" class="vaultImage">
                 <p class="vaultTextTitle fs-3">{{ activeVault.name }}</p>
                 <p v-if="activeVault.creator" class="vaultTextName">By {{ activeVault.creator.name }}</p>
+                <p v-if="activeVault.isPrivate == true" class="lockIcon fs-3"><i class="mdi mdi-lock"></i></p>
             </section>
 
             <section>
@@ -43,6 +44,7 @@ export default {
             }
             catch (error) {
                 Pop.error(error);
+                router.push({ name: 'Home' })
             }
         }
         async function getKeepsInVault() {
@@ -91,6 +93,14 @@ export default {
     position: absolute;
     bottom: 0;
     font-weight: bolder;
+    color: var(--bs-text);
+    text-shadow: 2px 2px 3px black;
+}
+
+.lockIcon {
+    position: absolute;
+    top: 0;
+    right: 27%;
     color: var(--bs-text);
     text-shadow: 2px 2px 3px black;
 }
