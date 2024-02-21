@@ -34,8 +34,9 @@
                         </section>
                         <section class="col-12 col-md-6">
 
-                            <div v-if="activeKeep.creatorId == account.id" @click="deleteKeep()" class="text-end"><i
-                                    class="mdi mdi-close-circle text-danger btn btn-outline fs-3"></i></div>
+                            <div v-if="activeKeep.creatorId == account.id" @click="deleteKeep()" class="text-end"
+                                title="DELETE!"><i
+                                    class="mdi mdi-delete-circle-outline text-danger btn btn-outline fs-3"></i></div>
 
                             <p class="modal-title fs-5 text-center fw-bolder fs-2 mt-2" id="keepModalLabel">
                                 {{ activeKeep.name }}

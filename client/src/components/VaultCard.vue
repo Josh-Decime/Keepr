@@ -2,6 +2,7 @@
     <div class="relativePlacement selectable mb-3">
         <img :src="vault.img" :alt="`Picture of ${vault.name}`" class="img-fluid imgStyling">
         <p class="absolutePlacement fs-5">{{ vault.name }}</p>
+        <p v-if="vault.isPrivate == true" class="lockIcon fs-1"><i class="mdi mdi-lock"></i></p>
     </div>
 </template>
 
@@ -33,6 +34,14 @@ export default {
     color: var(--bs-text);
     text-shadow: 2px 2px 3px black;
     text-decoration: underline;
+}
+
+.lockIcon {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    color: var(--bs-text);
+    text-shadow: 2px 2px 3px black;
 }
 
 .imgStyling {

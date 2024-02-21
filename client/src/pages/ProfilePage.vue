@@ -1,14 +1,14 @@
 <template>
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-8">
+            <div class="col-12 col-md-8">
                 <section class="">
                     <img :src="profile.coverImg" :alt="`Cover image for ${profile.name}'s profile`" class="img-fluid">
                     <img :src="profile.picture" :alt="`${profile.name}'s profile picture`">
                 </section>
 
                 <section class="row">
-                    <p class="fs-3 fw-bold">Vaults:</p>
+                    <p class="fs-3 fw-bold mt-2">Vaults:</p>
                     <div class="masonry">
                         <div v-for="vault in vaults">
                             <VaultCard :vault="vault" />
@@ -17,7 +17,7 @@
                 </section>
 
                 <section class="row">
-                    <p class="fs-3 fw-bold">Keeps:</p>
+                    <p class="fs-3 fw-boldmt-2">Keeps:</p>
                     <div class=" masonry">
                         <div v-for="keep in keeps" class="">
                             <KeepCard :keep="keep" />
