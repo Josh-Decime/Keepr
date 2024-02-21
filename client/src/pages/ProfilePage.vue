@@ -7,12 +7,17 @@
                     <img :src="profile.picture" :alt="`${profile.name}'s profile picture`">
                 </section>
 
-                <section>
-                    <p class="fs-3">Vaults</p>
+                <section class="row">
+                    <p class="fs-3 fw-bold">Vaults:</p>
+                    <div class="masonry">
+                        <div v-for="vault in vaults">
+                            <VaultCard :vault="vault" />
+                        </div>
+                    </div>
                 </section>
 
                 <section class="row">
-                    <p class="fs-3">Keeps</p>
+                    <p class="fs-3 fw-bold">Keeps:</p>
                     <div class=" masonry">
                         <div v-for="keep in keeps" class="">
                             <KeepCard :keep="keep" />
@@ -30,19 +35,24 @@ import { useRoute, useRouter } from 'vue-router';
 import { AppState } from '../AppState';
 import { computed, ref, onMounted } from 'vue';
 import Pop from '../utils/Pop.js';
-import { profilesService } from '../services/ProfilesService.js'
+import { profilesService } from '../services/ProfilesService.js';
 import { keepsService } from '../services/KeepsService.js';
+import { vaultsService } from '../services/VaultsService.js';
 import KeepCard from '../components/KeepCard.vue';
+import VaultCard from '../components/VaultCard.vue';
 export default {
     setup() {
         const route = useRoute();
         const router = useRouter();
         const profile = computed(() => AppState.profile);
         const keeps = computed(() => AppState.keeps);
+        const vaults = computed(() => AppState.vaults);
         onMounted(() => {
             getProfile();
             getUsersKeeps();
+            getUsersVaults();
         });
+
         async function getProfile() {
             try {
                 await profilesService.getProfile(route.params.profileId);
@@ -51,6 +61,7 @@ export default {
                 Pop.error(error);
             }
         }
+
         async function getUsersKeeps() {
             try {
                 await keepsService.getUsersKeeps(route.params.profileId);
@@ -59,12 +70,21 @@ export default {
                 Pop.error(error);
             }
         }
+
+        async function getUsersVaults() {
+            try {
+                await vaultsService.getUsersVaults(route.params.profileId);
+            } catch (error) {
+                Pop.error(error)
+            }
+        }
         return {
             profile,
             keeps,
+            vaults,
         };
     },
-    components: { KeepCard }
+    components: { KeepCard, VaultCard }
 };
 </script>
 

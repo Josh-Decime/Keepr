@@ -1,0 +1,43 @@
+<template>
+    <div class="relativePlacement selectable mb-3">
+        <img :src="vault.img" :alt="`Picture of ${vault.name}`" class="img-fluid imgStyling">
+        <p class="absolutePlacement fs-5">{{ vault.name }}</p>
+    </div>
+</template>
+
+
+<script>
+import { AppState } from '../AppState';
+import { computed, ref, onMounted } from 'vue';
+import { Vault } from '../models/Vault.js';
+export default {
+    props: { vault: { type: Vault, required: true } },
+    setup() {
+        return {}
+    }
+};
+</script>
+
+
+<style lang="scss" scoped>
+.relativePlacement {
+    position: relative;
+
+}
+
+.absolutePlacement {
+    position: absolute;
+    bottom: 0;
+    margin: 10px;
+    font-weight: bolder;
+    color: var(--bs-text);
+    text-shadow: 2px 2px 3px black;
+    text-decoration: underline;
+}
+
+.imgStyling {
+    border-radius: 5px;
+    border: solid;
+    box-shadow: 2px 2px 3px black;
+}
+</style>
