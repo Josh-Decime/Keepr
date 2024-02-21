@@ -1,9 +1,11 @@
 <template>
-    <div class="relativePlacement selectable mb-3">
-        <img :src="vault.img" :alt="`Picture of ${vault.name}`" class="img-fluid imgStyling">
-        <p class="absolutePlacement fs-5">{{ vault.name }}</p>
-        <p v-if="vault.isPrivate == true" class="lockIcon fs-1"><i class="mdi mdi-lock"></i></p>
-    </div>
+    <RouterLink :to="{ path: `../vaults/${vault.id}` }" @click="setActiveVault()">
+        <div class="relativePlacement selectable mb-3">
+            <img :src="vault.img" :alt="`Picture of ${vault.name}`" class="img-fluid imgStyling">
+            <p class="absolutePlacement fs-5">{{ vault.name }}</p>
+            <p v-if="vault.isPrivate == true" class="lockIcon fs-1"><i class="mdi mdi-lock"></i></p>
+        </div>
+    </RouterLink>
 </template>
 
 
@@ -11,10 +13,23 @@
 import { AppState } from '../AppState';
 import { computed, ref, onMounted } from 'vue';
 import { Vault } from '../models/Vault.js';
+import { vaultsService } from '../services/VaultsService.js';
+import Pop from '../utils/Pop.js';
 export default {
     props: { vault: { type: Vault, required: true } },
-    setup() {
-        return {}
+    setup(props) {
+
+        async function setActiveVault() {
+            try {
+                await vaultsService.setActiveVault(props.vault.id)
+            } catch (error) {
+                Pop.error(error)
+            }
+        }
+
+        return {
+            setActiveVault,
+        }
     }
 };
 </script>

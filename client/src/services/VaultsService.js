@@ -11,6 +11,12 @@ class VaultsService {
         AppState.vaults = response.data.map(vault => new Vault(vault))
     }
 
+    async setActiveVault(vaultId) {
+        let response = await api.get(`api/vaults/${vaultId}`)
+        let activeVault = new Vault(response.data)
+        AppState.activeVault = activeVault
+    }
+
 
 
 }

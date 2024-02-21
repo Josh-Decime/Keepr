@@ -17,7 +17,7 @@
                 </section>
 
                 <section class="row">
-                    <p class="fs-3 fw-boldmt-2">Keeps:</p>
+                    <p class="fs-3 fw-bold mt-2">Keeps:</p>
                     <div class=" masonry">
                         <div v-for="keep in keeps" class="">
                             <KeepCard :keep="keep" />
