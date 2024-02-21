@@ -6,6 +6,8 @@
                 <p class="vaultTextTitle fs-3">{{ activeVault.name }}</p>
                 <p v-if="activeVault.creator" class="vaultTextName">By {{ activeVault.creator.name }}</p>
                 <p v-if="activeVault.isPrivate == true" class="lockIcon fs-3"><i class="mdi mdi-lock"></i></p>
+                <p v-if="activeVault.creatorId == account.id" @click="deleteVault()" class="deleteIcon"><i
+                        class="mdi mdi-delete-circle-outline text-danger btn btn-outline fs-3"></i></p>
             </section>
 
             <section>
@@ -33,6 +35,7 @@ export default {
         const route = useRoute();
         const router = useRouter();
         const keeps = computed(() => AppState.keeps);
+        const account = computed(() => AppState.account);
         onMounted(() => {
             setActiveVaultFromUrl();
             getKeepsInVault();
@@ -55,9 +58,24 @@ export default {
                 Pop.error(error);
             }
         }
+
+        async function deleteVault() {
+            try {
+                const confirm = await Pop.confirm("Are you sure you want to delete this?");
+                if (!confirm)
+                    return;
+                router.push({ name: 'Home' })
+                await vaultsService.deleteVault(route.params.vaultId);
+                Pop.success('Vault deleted');
+            } catch (error) {
+                Pop.error(error)
+            }
+        }
         return {
             activeVault,
             keeps,
+            account,
+            deleteVault,
         };
     },
     components: { KeepCard }
@@ -100,9 +118,15 @@ export default {
 .lockIcon {
     position: absolute;
     top: 0;
-    right: 27%;
+    left: 27%;
     color: var(--bs-text);
     text-shadow: 2px 2px 3px black;
+}
+
+.deleteIcon {
+    position: absolute;
+    top: 0;
+    right: 26%;
 }
 
 .masonry {

@@ -24,6 +24,20 @@ class VaultsService {
         AppState.keeps = response.data.map(keep => new Keep(keep))
     }
 
+    async createVault(vaultData) {
+        const response = await api.post('api/vaults', vaultData)
+        logger.log('creating vault response data:', response.data)
+        const newVault = new Vault(response.data)
+        // FIXME doesn't work for some reason but even if it did it will have the same issues as in keeps
+        // AppState.vaults.push(newVault)
+        return newVault
+    }
+
+    async deleteVault(vaultId) {
+        const response = await api.delete(`api/vaults/${vaultId}`)
+        logger.log('Deleted vault', response)
+    }
+
 
 
 }

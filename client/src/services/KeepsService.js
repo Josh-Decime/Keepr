@@ -21,7 +21,8 @@ class KeepsService {
         const response = await api.post('api/keeps', keepData)
         logger.log('creating keep response data:', response.data)
         const newKeep = new Keep(response.data)
-        AppState.keeps.unshift(newKeep)
+        // FIXME this will shift it into whatever keeps are active even if it doesn't belong there
+        // AppState.keeps.unshift(newKeep)
         return newKeep
     }
 
