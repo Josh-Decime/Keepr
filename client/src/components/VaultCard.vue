@@ -62,6 +62,7 @@ export default {
 .imgStyling {
     border-radius: 5px;
     border: solid;
+    border-color: black;
     box-shadow: 2px 2px 3px black;
 }
 </style>

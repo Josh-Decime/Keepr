@@ -2,9 +2,12 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-12 col-md-8">
-                <section class="">
-                    <img :src="profile.coverImg" :alt="`Cover image for ${profile.name}'s profile`" class="img-fluid">
-                    <img :src="profile.picture" :alt="`${profile.name}'s profile picture`">
+                <section class="relativeParent">
+                    <img :src="profile.coverImg" :alt="`Cover image for ${profile.name}'s profile`" class="coverImg">
+                    <img :src="profile.picture" :alt="`${profile.name}'s profile picture`" class="profileImg">
+                </section>
+                <section>
+                    <p class="text-center profileName fs-3">{{ profile.name }}</p>
                 </section>
 
                 <section class="row">
@@ -17,7 +20,7 @@
                 </section>
 
                 <section class="row">
-                    <p class="fs-3 fw-bold mt-2">Keeps:</p>
+                    <p class="fs-3 fw-bold mt-4">Keeps:</p>
                     <div class=" masonry">
                         <div v-for="keep in keeps" class="">
                             <KeepCard :keep="keep" />
@@ -92,5 +95,31 @@ export default {
 <style lang="scss" scoped>
 .masonry {
     columns: 200px;
+}
+
+.coverImg {
+    height: 25vh;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.relativeParent {
+    position: relative;
+}
+
+.profileImg {
+    position: absolute;
+    border-radius: 50%;
+    border: solid;
+    border-color: black;
+    bottom: -45px;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.profileName {
+    margin-top: 50px;
+    font-weight: bolder;
 }
 </style>
