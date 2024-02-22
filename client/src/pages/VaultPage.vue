@@ -9,6 +9,12 @@
                 <p v-if="activeVault.creatorId == account.id" @click="deleteVault()" class="deleteIcon"><i
                         class="mdi mdi-delete-circle-outline text-danger btn btn-outline fs-3"></i></p>
             </section>
+            <section class="row justify-content-center">
+                <div class="textBG col-12 col-md-4 mt-3">
+                    <p class="text-center mt-2 fw-bold">{{ keeps.length }} Keeps</p>
+                    <p>"{{ activeVault.description }}" <i v-if="activeVault.creator">-{{ activeVault.creator.name }}</i></p>
+                </div>
+            </section>
 
             <section>
                 <div class="masonry">
@@ -131,5 +137,10 @@ export default {
 
 .masonry {
     columns: 200px;
+}
+
+.textBG {
+    background-color: var(--bs-secondary);
+    border-radius: 25px;
 }
 </style>

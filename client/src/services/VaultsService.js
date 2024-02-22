@@ -38,6 +38,12 @@ class VaultsService {
         logger.log('Deleted vault', response)
     }
 
+    async getMyVaults() {
+        const response = await api.get(`account/vaults`)
+        AppState.myVaults = response.data
+        logger.log('My vaults in the AppState:', response.data)
+    }
+
 
 
 }

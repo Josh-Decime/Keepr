@@ -8,6 +8,7 @@
                 </section>
                 <section>
                     <p class="text-center profileName fs-3">{{ profile.name }}</p>
+                    <p class="text-center">{{ vaults.length }} Vaults | {{ keeps.length }} Keeps</p>
                 </section>
 
                 <section class="row">

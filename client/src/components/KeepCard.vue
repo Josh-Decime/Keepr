@@ -43,11 +43,17 @@
                             </p>
                             <p class="fs-5 mx-2">{{ activeKeep.description }}</p>
 
+                            <!--  select tag with v-for of vaults to choose, to save keep to vault -->
+
                             <!-- FIXME align self & align item end aren't pushing this to the bottom -->
                             <!-- TODO this is giving a warning to the console, could be cleaned up -->
+                            <select name="VaultsDropdown" id="VaultsDropdown">
+                                <option v-for="myVault in myVaults" :value="`${myVault.id}`">{{ myVault.name }}</option>
+                            </select>
+
                             <section v-if="activeKeep.creator">
                                 <RouterLink :to="{ path: `profile/${activeKeep.creatorId}` }">
-                                    <div class="align-self-end" data-bs-dismiss="modal" aria-label="ToProfile">
+                                    <div class="" data-bs-dismiss="modal" aria-label="ToProfile">
                                         <img :src="activeKeep.creator.picture"
                                             :alt="`${activeKeep.creator.name}'s profile picture'`"
                                             class="keepModalProfileImg">
@@ -73,9 +79,11 @@ import Pop from '../utils/Pop.js';
 import { logger } from '../utils/Logger.js';
 import { Modal } from 'bootstrap';
 import { RouterLink } from 'vue-router';
+import { vaultsService } from '../services/VaultsService.js';
 export default {
     props: { keep: { type: Keep, required: true } },
     setup(props) {
+
         const activeKeep = computed(() => AppState.activeKeep);
         async function getActiveKeep() {
             try {
@@ -99,11 +107,22 @@ export default {
                 Pop.error(error);
             }
         }
+        ``
+        // onMounted(() => getMyVaults())
+        // async function getMyVaults() {
+        //     try {
+        //         logger.log('getting my vaults!')
+        //         await vaultsService.getMyVaults();
+        //     } catch (error) {
+        //         Pop.error(error)
+        //     }
+        // }
         return {
             getActiveKeep,
             deleteKeep,
             activeKeep,
             account: computed(() => AppState.account),
+            myVaults: computed(() => AppState.myVaults),
         };
     },
     components: { RouterLink }
@@ -116,7 +135,7 @@ export default {
     border-radius: 15px;
     overflow: hidden;
     // border: solid;
-    box-shadow: 3px 3px 4px;
+    box-shadow: 3px 3px 4px black;
 
 }
 
