@@ -116,6 +116,9 @@ export default {
     bottom: -45px;
     left: 50%;
     transform: translate(-50%);
+    height: 20vh;
+    width: 20vh;
+    object-fit: cover;
 }
 
 .profileName {
