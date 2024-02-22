@@ -47,5 +47,19 @@ public class KeepsService(KeepsRepository repo)
         return $"Keep {original.Name} has been deleted.";
     }
 
+    internal Keep IncreaseViews(int keepId)
+    {
+        Keep keep = repo.GetById(keepId);
+        keep.Views++;
+        repo.Update(keep);
+        return keep;
+    }
+    internal Keep IncreaseViews(Keep keep)
+    {
+        keep.Views++;
+        repo.Update(keep);
+        return keep;
+    }
+
 
 }

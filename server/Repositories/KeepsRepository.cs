@@ -70,7 +70,8 @@ public class KeepsRepository(IDbConnection db) : IRepository<Keep>
         UPDATE keeps SET
         name = @name,
         description = @description,
-        img = @img
+        img = @img,
+        views = @views
         WHERE id = @id;
 
         SELECT
