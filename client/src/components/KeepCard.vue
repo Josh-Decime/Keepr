@@ -33,7 +33,7 @@
                                 class="img-fluid desktopRoundEdge mobileRoundTop imgToEdge">
                         </section>
                         <section class="col-12 col-md-6">
-                            <div class="text-center">
+                            <div class="text-center mt-3">
                                 <span class="mx-2"> <i class="mdi mdi-eye"></i> {{ activeKeep.views }}</span>
                                 <span class="mx-2"> <i class="mdi mdi-safe-square-outline"></i> {{ activeKeep.kept }}</span>
                             </div>
@@ -46,13 +46,16 @@
 
                             <!-- FIXME align self & align item end aren't pushing this to the bottom -->
                             <!-- TODO this is giving a warning to the console, could be cleaned up -->
-                            <select name="VaultsDropdown" id="VaultsDropdown">
-                                <option v-for="myVault in myVaults" :value="`${myVault.id}`">{{ myVault.name }}</option>
-                            </select>
+                            <form v-if="account.id" @submit.prevent="createVaultKeep()">
+                                <select v-model="vaultChoice" name="VaultsDropdown" id="VaultsDropdown">
+                                    <option v-for="myVault in myVaults" :value="myVault.id">{{ myVault.name }}</option>
+                                </select>
+                                <button type="submit" class="btn btn-success mx-2">Add to Vault</button>
+                            </form>
 
                             <section v-if="activeKeep.creator">
                                 <RouterLink :to="{ path: `profile/${activeKeep.creatorId}` }">
-                                    <div class="" data-bs-dismiss="modal" aria-label="ToProfile">
+                                    <div class="mt-3" data-bs-dismiss="modal" aria-label="ToProfile">
                                         <img :src="activeKeep.creator.picture"
                                             :alt="`${activeKeep.creator.name}'s profile picture'`"
                                             class="keepModalProfileImg">
@@ -61,7 +64,7 @@
                                 </RouterLink>
                             </section>
                             <div v-if="activeKeep.creatorId == account.id" @click="deleteKeep()" class="text-end"
-                                title="DELETE!"><i
+                                title="Delete keep"><i
                                     class="mdi mdi-delete-circle-outline text-danger btn btn-outline fs-3"></i></div>
                         </section>
                     </div>
@@ -82,11 +85,14 @@ import { logger } from '../utils/Logger.js';
 import { Modal } from 'bootstrap';
 import { RouterLink } from 'vue-router';
 import { vaultsService } from '../services/VaultsService.js';
+import { vaultKeepsService } from '../services/VaultKeepsService.js'
 export default {
     props: { keep: { type: Keep, required: true } },
     setup(props) {
 
+        const account = computed(() => AppState.account)
         const activeKeep = computed(() => AppState.activeKeep);
+        const vaultChoice = ref(0)
 
 
         async function getActiveKeep() {
@@ -99,7 +105,7 @@ export default {
         }
         async function deleteKeep() {
             try {
-                const confirm = await Pop.confirm("Are you sure you want to delete this?");
+                const confirm = await Pop.confirm("Are you sure you want to delete this keep?");
                 if (!confirm)
                     return;
                 Modal.getOrCreateInstance('#keepModal').hide();
@@ -121,12 +127,23 @@ export default {
         //         Pop.error(error)
         //     }
         // }
+
+        async function createVaultKeep() {
+            // Pop.error('Function not implemented')
+            // I need to get the vaultId out of the dropdown & the keepId from the keep & pass them through to createVaultKeep
+            let VaultKeepData = { vaultId: vaultChoice.value, keepId: activeKeep.value.id }
+            await vaultKeepsService.createVaultKeep(VaultKeepData)
+            Pop.success('Keep is saved in vault')
+        }
         return {
             getActiveKeep,
             deleteKeep,
+            createVaultKeep,
             activeKeep,
             account: computed(() => AppState.account),
             myVaults: computed(() => AppState.myVaults),
+            vaultChoice,
+            account,
         };
     },
     components: { RouterLink }

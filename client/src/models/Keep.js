@@ -11,6 +11,12 @@ export class Keep {
         this.kept = data.kept
         this.creatorId = data.creatorId
         this.creator = data.creator ? new Profile(data.creator) : null
-        // Kept
+    }
+}
+
+export class VaultKept extends Keep {
+    constructor(data) {
+        super(data)
+        this.vaultKeepId = data.vaultKeepId
     }
 }

@@ -7,7 +7,7 @@
                 <p v-if="activeVault.creator" class="vaultTextName">By {{ activeVault.creator.name }}</p>
                 <p v-if="activeVault.isPrivate == true" class="lockIcon fs-3"><i class="mdi mdi-lock"></i></p>
                 <p v-if="activeVault.creatorId == account.id" @click="deleteVault()" class="deleteIcon"><i
-                        class="mdi mdi-delete-circle-outline text-danger btn btn-outline fs-3"></i></p>
+                        class="mdi mdi-delete-circle-outline text-danger btn btn-outline fs-3" title="Delete Vault"></i></p>
             </section>
             <section class="row justify-content-center">
                 <div class="textBG col-12 col-md-4 mt-3">
@@ -17,7 +17,7 @@
             </section>
 
             <section>
-                <div class="masonry">
+                <div class="masonry mt-3">
                     <div v-for="keep in keeps">
                         <KeepCard :keep="keep" />
                     </div>
@@ -67,7 +67,7 @@ export default {
 
         async function deleteVault() {
             try {
-                const confirm = await Pop.confirm("Are you sure you want to delete this?");
+                const confirm = await Pop.confirm("Are you sure you want to delete this vault?");
                 if (!confirm)
                     return;
                 router.push({ name: 'Home' })
