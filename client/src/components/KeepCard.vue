@@ -33,7 +33,10 @@
                                 class="img-fluid desktopRoundEdge mobileRoundTop imgToEdge">
                         </section>
                         <section class="col-12 col-md-6">
-                            <p> <i class="mdi mdi-eye"></i> {{ activeKeep.views }}</p>
+                            <div class="text-center">
+                                <span class="mx-2"> <i class="mdi mdi-eye"></i> {{ activeKeep.views }}</span>
+                                <span class="mx-2"> <i class="mdi mdi-safe-square-outline"></i> {{ activeKeep.kept }}</span>
+                            </div>
                             <p class="modal-title fs-5 text-center fw-bolder fs-2 mt-2" id="keepModalLabel">
                                 {{ activeKeep.name }}
                             </p>

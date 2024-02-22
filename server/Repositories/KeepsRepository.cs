@@ -51,10 +51,13 @@ public class KeepsRepository(IDbConnection db) : IRepository<Keep>
         string sql = @"
         SELECT
         keeps.*,
+        COUNT(vaultKeeps.id) AS kept,
         accounts.*
         FROM keeps
         JOIN accounts ON keeps.creatorId = accounts.id
-        WHERE keeps.id = @keepId;
+        LEFT JOIN vaultKeeps ON vaultKeeps.keepId = keeps.id
+        WHERE keeps.id = @keepId
+        GROUP BY (keeps.id);
         ";
         Keep keep = db.Query<Keep, Account, Keep>(sql, (keep, account) =>
         {

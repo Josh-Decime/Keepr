@@ -25,6 +25,10 @@ public class KeepsService(KeepsRepository repo)
     {
         Keep keep = repo.GetById(keepId);
         if (keep == null) throw new Exception($"No keep at id: {keepId}");
+
+        keep.Views++;
+        repo.Update(keep);
+
         return keep;
     }
 
@@ -47,19 +51,18 @@ public class KeepsService(KeepsRepository repo)
         return $"Keep {original.Name} has been deleted.";
     }
 
-    internal Keep IncreaseViews(int keepId)
-    {
-        Keep keep = repo.GetById(keepId);
-        keep.Views++;
-        repo.Update(keep);
-        return keep;
-    }
-    internal Keep IncreaseViews(Keep keep)
-    {
-        keep.Views++;
-        repo.Update(keep);
-        return keep;
-    }
+    // internal Keep IncreaseViews(int keepId)
+    // {
+    //     Keep keep = repo.GetById(keepId);
+
+    //     return keep;
+    // }
+    // internal Keep IncreaseViews(Keep keep)
+    // {
+    //     keep.Views++;
+    //     repo.Update(keep);
+    //     return keep;
+    // }
 
 
 }
