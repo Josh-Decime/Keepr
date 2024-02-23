@@ -15,7 +15,10 @@ class VaultKeepsService {
         const response = await api.delete(`api/vaultKeeps/${vaultKeepId}`)
         logger.log('Delete vaultKeep response data:', response.data)
         // FIXME Im not sure how to find index so I can remove the keep from the array
-        // const indexToRemove = AppState.keeps.findIndex()
+        const indexToRemove = AppState.keeps.findIndex(keep => keep.vaultKeepId == vaultKeepId)
+        if (indexToRemove > -1) {
+            AppState.keeps.splice(indexToRemove, 1)
+        }
     }
 
 

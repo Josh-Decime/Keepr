@@ -153,6 +153,8 @@ export default {
                 if (!confirm)
                     return;
 
+                Modal.getOrCreateInstance(`#keepModal${props.keep.id}`).hide();
+
                 await vaultKeepsService.deleteVaultKeep(vaultKeepId)
             } catch (error) {
                 Pop.error(error)
