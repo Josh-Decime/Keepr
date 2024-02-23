@@ -42,11 +42,11 @@ export default {
         const router = useRouter();
         const keeps = computed(() => AppState.keeps);
         const account = computed(() => AppState.account);
+        const activeVault = computed(() => AppState.activeVault);
         onMounted(() => {
             setActiveVaultFromUrl();
             getKeepsInVault();
         });
-        const activeVault = computed(() => AppState.activeVault);
         async function setActiveVaultFromUrl() {
             try {
                 await vaultsService.setActiveVault(route.params.vaultId);

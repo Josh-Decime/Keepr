@@ -2,6 +2,7 @@ import { AppState } from "../AppState.js";
 import { Keep } from "../models/Keep.js";
 import { api } from "./AxiosService.js";
 import { logger } from "../utils/Logger.js";
+import { VaultKept } from "../models/Keep.js";
 
 class KeepsService {
     async getKeeps() {
@@ -12,7 +13,7 @@ class KeepsService {
 
     async getActiveKeep(keepId) {
         let response = await api.get(`api/keeps/${keepId}`)
-        let activeKeep = new Keep(response.data)
+        let activeKeep = new VaultKept(response.data)
         AppState.activeKeep = activeKeep
         logger.log('active keep:', AppState.activeKeep)
     }

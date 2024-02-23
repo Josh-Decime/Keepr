@@ -1,5 +1,5 @@
 <template>
-    <section @click="getActiveKeep()" data-bs-toggle="modal" data-bs-target="#keepModal">
+    <section @click="getActiveKeep()" data-bs-toggle="modal" :data-bs-target="`#keepModal${keep.id}`">
         <div class="mt-4 relativePlacement selectable">
 
             <!-- <div v-if="keep.creatorId == account.id"><i
@@ -14,7 +14,8 @@
 
 
     <section v-if="activeKeep">
-        <div class="modal fade" id="keepModal" tabindex="-1" aria-labelledby="keepModalLabel" aria-hidden="true">
+        <div class="modal fade" :id="`keepModal${keep.id}`" tabindex="-1" aria-labelledby="keepModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-xl rounded">
                 <div class="modal-content">
                     <!-- <div class="modal-header">
@@ -40,18 +41,24 @@
                             <p class="modal-title fs-5 text-center fw-bolder fs-2 mt-2" id="keepModalLabel">
                                 {{ activeKeep.name }}
                             </p>
+                            <p>this belongs to {{ keep.name }}</p>
                             <p class="fs-5 mx-2">{{ activeKeep.description }}</p>
 
                             <!--  select tag with v-for of vaults to choose, to save keep to vault -->
 
                             <!-- FIXME align self & align item end aren't pushing this to the bottom -->
                             <!-- TODO this is giving a warning to the console, could be cleaned up -->
-                            <form v-if="account.id" @submit.prevent="createVaultKeep()">
+                            <form v-if="account.id && route.name != 'Vault'" @submit.prevent="createVaultKeep()">
                                 <select v-model="vaultChoice" name="VaultsDropdown" id="VaultsDropdown">
                                     <option v-for="myVault in myVaults" :value="myVault.id">{{ myVault.name }}</option>
                                 </select>
                                 <button type="submit" class="btn btn-success mx-2">Add to Vault</button>
                             </form>
+                            <!--  -->
+                            <div v-if="route.name == 'Vault' && activeVault.creatorId == account.id">
+                                <button @click="deleteVaultKeep(keep.vaultKeepId)" class="btn btn-danger">Remove from
+                                    Vault</button>
+                            </div>
 
                             <section v-if="activeKeep.creator">
                                 <RouterLink :to="{ path: `profile/${activeKeep.creatorId}` }">
@@ -83,16 +90,18 @@ import { keepsService } from '../services/KeepsService.js';
 import Pop from '../utils/Pop.js';
 import { logger } from '../utils/Logger.js';
 import { Modal } from 'bootstrap';
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRoute } from 'vue-router';
 import { vaultsService } from '../services/VaultsService.js';
 import { vaultKeepsService } from '../services/VaultKeepsService.js'
 export default {
     props: { keep: { type: Keep, required: true } },
     setup(props) {
-
-        const account = computed(() => AppState.account)
+        const route = useRoute();
+        const router = useRoute();
+        const account = computed(() => AppState.account);
         const activeKeep = computed(() => AppState.activeKeep);
-        const vaultChoice = ref(0)
+        const vaultChoice = ref(0);
+        const activeVault = computed(() => AppState.activeVault)
 
 
         async function getActiveKeep() {
@@ -108,7 +117,7 @@ export default {
                 const confirm = await Pop.confirm("Are you sure you want to delete this keep?");
                 if (!confirm)
                     return;
-                Modal.getOrCreateInstance('#keepModal').hide();
+                Modal.getOrCreateInstance(`#keepModal${props.keep.id}`).hide();
                 logger.log('active keep id:', activeKeep.value.id);
                 await keepsService.deleteKeep(activeKeep.value.id);
                 Pop.success('Keep deleted');
@@ -135,6 +144,22 @@ export default {
             await vaultKeepsService.createVaultKeep(VaultKeepData)
             Pop.success('Keep is saved in vault')
         }
+
+        async function deleteVaultKeep(vaultKeepId) {
+            try {
+                logger.log('Vault Keep Id:', vaultKeepId)
+
+                const confirm = await Pop.confirm("Are you sure you want to remove this keep from your vault?");
+                if (!confirm)
+                    return;
+
+                await vaultKeepsService.deleteVaultKeep(vaultKeepId)
+            } catch (error) {
+                Pop.error(error)
+            }
+        }
+
+
         return {
             getActiveKeep,
             deleteKeep,
@@ -144,6 +169,10 @@ export default {
             myVaults: computed(() => AppState.myVaults),
             vaultChoice,
             account,
+            route,
+            router,
+            activeVault,
+            deleteVaultKeep
         };
     },
     components: { RouterLink }

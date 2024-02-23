@@ -39,7 +39,7 @@ public class VaultKeepsRepository(IDbConnection db)
         List<VaultKept> vaultKept = db.Query<VaultKept, Account, VaultKeep, VaultKept>(sql, (vaultKept, account, vaultKeep) =>
         {
             vaultKept.Creator = account;
-            vaultKept.VaultKeepId = vaultKeep.KeepId;
+            vaultKept.VaultKeepId = vaultKeep.Id;
             return vaultKept;
         }, new { vaultId }).ToList();
         return vaultKept;

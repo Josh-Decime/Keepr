@@ -2,7 +2,7 @@ import { AppState } from "../AppState.js";
 import { Vault } from "../models/Vault.js";
 import { api } from "./AxiosService.js";
 import { logger } from "../utils/Logger.js";
-import { Keep } from "../models/Keep.js";
+import { Keep, VaultKept } from "../models/Keep.js";
 
 class VaultsService {
 
@@ -21,7 +21,7 @@ class VaultsService {
     async getKeepsInVault(vaultId) {
         let response = await api.get(`api/vaults/${vaultId}/keeps`)
         logger.log('keep in vault response data:', response.data)
-        AppState.keeps = response.data.map(keep => new Keep(keep))
+        AppState.keeps = response.data.map(keep => new VaultKept(keep))
     }
 
     async createVault(vaultData) {
